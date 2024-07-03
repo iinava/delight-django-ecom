@@ -1,0 +1,89 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Django stuff:
+*.log
+*.pot
+*.pyc
+
+# If you use Django migrations:
+**/migrations/*.py
+**/migrations/*.pyc
+
+# If you use SQLite:
+*.sqlite3
+
+# If you use MySQL:
+*.mysql
+
+# If you use PostgreSQL:
+*.pg
+
+# If you use venv for virtual environment:
+venv/
+ENV/
+env/
+.venv/
+.ENV/
+
+# If you use Pipenv:
+Pipfile.lock
+
+# If you use pyenv:
+.python-version
+
+# If you use coverage:
+htmlcov/
+.coverage
+.coverage.*
+
+# If you use Sphinx:
+docs/_build/
+
+# If you use flake8:
+.flake8
+
+# If you use mypy:
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# If you use pytest:
+.pytest_cache/
+.tox/
+.cache/
+
+# If you use Jupyter Notebook:
+.ipynb_checkpoints
+
+# If you use pyright:
+pyrightconfig.json
+
+# VS Code settings:
+.vscode/
+
+# MacOS files
+.DS_Store
+
+# Linux files
+*~
+
+# Windows files
+Thumbs.db
+*.bak
+*.swp
+
+# Ignore any local environment-specific files:
+*.env
+.env.*
+.envrc
+venv
+
+# Ignore compiled dependencies:
+node_modules/
+
+# Ignore build outputs:
+build/
+dist/
