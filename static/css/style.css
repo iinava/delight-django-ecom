@@ -2362,3 +2362,15 @@ ol {
 		padding: 10px 0;
 	}
 }
+
+
+.notavailable{
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+	text-align: center;
+}
+.text-container{
+	width: 350px;
+}

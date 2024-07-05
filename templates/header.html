@@ -24,7 +24,7 @@
                     <li><a href=".#">Categories</a>
                         <ul class="sub-menu">
                             {% for category in categories %}
-                            <li><a href="check-out.html">{{category.title}}</a></li>
+                            <li><a href="{% url "category_details" category.slug %}">{{category.title}}</a></li>
 
                             {% endfor %}
                         </ul>

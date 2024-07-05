@@ -1,0 +1,110 @@
+{% extends "../base.html" %} 
+{% load static %} 
+
+{% block title %}
+{{category.title}}s - Delight
+{% endblock %}
+
+{% block content %}
+
+<!-- Page Add Section Begin -->
+<section class="page-add">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="page-breadcrumb">
+          <h2>{{ category.title }} ({{products.count}})<span>.</span></h2>
+          <a href="{% url 'home' %}">Home</a>
+          <a class="active" href="#">{{ category.title }}</a>
+        </div>
+      </div>
+      <div class="col-lg-8">
+        <img src="{% static 'img/add.jpg' %}" alt="" />
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Page Add Section End -->
+
+<!-- Categories Page Section Begin -->
+<section class="categories-page spad">
+  <div class="container">
+    <div class="categories-controls">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="categories-filter">
+            <div class="cf-left">
+              <form action="#">
+                <select class="sort">
+                  <option value="">Sort by</option>
+                  <option value="">Orders</option>
+                  <option value="">Newest</option>
+                  <option value="">Price</option>
+                </select>
+              </form>
+            </div>
+            <div class="cf-right">
+              <span>{{ products|length }} Products</span>
+              <a href="#">2</a>
+              <a href="#" class="active">4</a>
+              <a href="#">6</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% if products.count == 0 %}
+   <div class="notavailable">
+    <div class="text-container">no products available now</div>
+    {% comment %} <img style="height:250px" src="https://ik.imagekit.io/nh40wkvsj/undraw_Taken_re_yn20%20(1).png?updatedAt=1720195512854" alt=""> {% endcomment %}
+   </div>
+
+    {% else %}
+    <div class="row">
+      {% for product in products %}
+      <div class="col-lg-3 col-md-6">
+        <div class="single-product-item">
+          <figure>
+            <img
+              style="height: 350px"
+              src="{{ product.thumbnail }}"
+              alt="{{ product.title }}"
+            />
+            {% if product.is_new %}
+            <div class="p-status">new</div>
+            {% elif product.is_on_sale %}
+            <div class="p-status sale">sale</div>
+            {% endif %}
+            <div class="hover-icon">
+              <a href="{{ product.thumbnail }}" class="pop-up">
+                <img
+                  src="{% static 'img/icons/zoom-plus.png' %}"
+                  alt="zoom icon"
+                />
+              </a>
+            </div>
+          </figure>
+          <div class="product-text">
+            <a href="{% url 'product_details' product.slug %}">
+              <h6>{{ product.title }}</h6>
+            </a>
+            <p>${{ product.price }}</p>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="more-product">
+      <div class="row">
+        <div class="col-lg-12 text-center">
+          <a href="#" class="primary-btn">Load More</a>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+  </div>
+</section>
+<!-- Categories Page Section End -->
+
+{% endblock content %}

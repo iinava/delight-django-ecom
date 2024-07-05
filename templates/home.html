@@ -33,11 +33,11 @@
                 <div class="col-lg-3 col-sm-6 mix {{category.slug}}">
                     <div class="single-product-item">
                         <figure>
-                            <a href="#"><img style="height:300px; width: 150px;" src="{{product.thumbnail}}" alt=""></a>
+                            <a href="{% url "product_details" product.slug %}"><img style="height:300px; width: 150px;" src="{{product.thumbnail}}" alt=""></a>
                             <div class="p-status">new</div>
                         </figure>
                         <div class="product-text">
-                            <h6>{{product.title}}</h6>
+                            <a href="{% url "product_details" product.slug %}"> <h6>{{product.title}}</h6></a>
                             <p>{{product.price}}</p>
                         </div>
                     </div>
