@@ -8,6 +8,8 @@ from django.core.paginator import (
     PageNotAnInteger,
     InvalidPage
 )
+from django.db.models import Q
+from django.shortcuts import render
 
 
 class Home(generic.TemplateView):
@@ -20,7 +22,7 @@ class Home(generic.TemplateView):
             'featured_products': Product.objects.filter(featured=True),
             'sliders': Slider.objects.filter(show=True),
         })
-        print(context)
+        # print(context)
         return context
 
 class ProductDetails(generic.DetailView):
@@ -82,4 +84,14 @@ class ProductList(generic.ListView):
         context['paginator'] = paginator
         return context
         
-     
+class SearchProducts(generic.View):
+    def get(self, *args, **kwargs):    
+        key = self.request.GET.get('key', '')
+        products = Product.objects.filter(
+            Q(title__icontains=key) | Q(category__title__icontains=key)
+        )   
+        context = {
+            'products': products,
+            'key': key,
+        }
+        return render(self.request, 'product/search_products.html', context)

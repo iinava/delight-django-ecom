@@ -1,0 +1,103 @@
+{% extends "../base.html" %} 
+{% load static %} 
+
+{% block title %}
+product search - Delight
+{% endblock %}
+
+{% block content %}
+{% if products.count > 0 %}
+<!-- Page Add Section Begin -->
+<section class="page-add">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="page-breadcrumb">
+          <h3>{{products.count }}Results found for {{key}}</h3>
+        </div>
+      </div>
+     
+    </div>
+  </div>
+</section>
+
+<!-- Page Add Section End -->
+{% endif %}
+
+<!-- Categories Page Section Begin -->
+<section class="categories-page spad">
+  <div class="container">
+    <div class="categories-controls">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="categories-filter">
+            <div class="cf-left">
+              <form action="#">
+                <select class="sort">
+                  <option value="">Sort by</option>
+                  <option value="">Orders</option>
+                  <option value="">Newest</option>
+                  <option value="">Price</option>
+                </select>
+              </form>
+            </div>
+        
+          </div>
+        </div>
+      </div>
+    </div>
+    {% if products.count == 0 %}
+   <div class="notavailable">
+    <div class="text-container">no products available now</div>
+    {% comment %} <img style="height:250px" src="https://ik.imagekit.io/nh40wkvsj/undraw_Taken_re_yn20%20(1).png?updatedAt=1720195512854" alt=""> {% endcomment %}
+   </div>
+
+    {% else %}
+    <div class="row">
+      {% for product in products %}
+      <div class="col-lg-3 col-md-6">
+        <div class="single-product-item">
+          <figure>
+            <img
+              style="height: 350px"
+              src="{{ product.thumbnail }}"
+              alt="{{ product.title }}"
+            />
+            {% if product.is_new %}
+            <div class="p-status">new</div>
+            {% elif product.is_on_sale %}
+            <div class="p-status sale">sale</div>
+            {% endif %}
+            <div class="hover-icon">
+              <a href="{{ product.thumbnail }}" class="pop-up">
+                <img
+                  src="{% static 'img/icons/zoom-plus.png' %}"
+                  alt="zoom icon"
+                />
+              </a>
+            </div>
+          </figure>
+          <div class="product-text">
+            <a href="{% url 'product_details' product.slug %}">
+              <h6>{{ product.title }}</h6>
+            </a>
+            <p>${{ product.price }}</p>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="more-product">
+      <div class="row">
+        <div class="col-lg-12 text-center">
+          <a href="#" class="primary-btn">Load More</a>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+  </div>
+</section>
+<!-- Categories Page Section End -->
+
+{% endblock content %}
