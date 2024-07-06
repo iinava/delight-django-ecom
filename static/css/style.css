@@ -2374,3 +2374,11 @@ ol {
 .text-container{
 	width: 350px;
 }
+.images {
+	transition: transform 0.3s ease-in-out;
+  }
+  
+.images:hover {
+	transform: scale(1.1);
+}
+  
