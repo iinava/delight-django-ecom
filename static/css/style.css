@@ -2381,4 +2381,6 @@ ol {
 .images:hover {
 	transform: scale(1.1);
 }
-  
+.cartbutton{
+	cursor: pointer;
+}

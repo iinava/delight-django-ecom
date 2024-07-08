@@ -10,6 +10,7 @@ from django.core.paginator import (
 )
 from django.db.models import Q
 from django.shortcuts import render
+from cart.carts import Cart
 
 
 class Home(generic.TemplateView):
@@ -73,6 +74,12 @@ class ProductList(generic.ListView):
     template_name = 'product/product_list.html'
     context_object_name = 'object_list'
     paginate_by = 8
+    
+    # def get(self,request,*args,**kwargs):
+    #     cart_items = Cart(self.request)
+    #     print(cart_items.cart)
+    #     return super().get(request, *args, **kwargs)
+    
     
     def  get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

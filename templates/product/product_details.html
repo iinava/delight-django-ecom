@@ -70,7 +70,10 @@
                         {% comment %} <li><span>Tags :</span> man, shirt, dotted, elegant, cool</li> {% endcomment %}
                     </ul>
                     {% if product.instock %}
-                    <button s href="#" class="primary-btn pc-btn">Add to cart</button>
+                  <form action="{% url "add_to_cart" product.id %}" method="POST">
+                    {% csrf_token %}
+                    <button  class="primary-btn pc-btn cartbutton">Add to cart</button>
+                  </form>
                     {% endif %}
                   
                    
