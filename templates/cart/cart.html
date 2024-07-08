@@ -48,11 +48,19 @@
     <td class="price-col">${{product.price}}</td>
     <td class="quantity-col">
         <div class="pro-qty">
-            <input type="text" value="{{item.quantity}}">
+            <a href="?product_id={{product.id}}&&quantity=-1">
+                <span class="dec qtybtn">-</span>
+            </a>
+            <input disabled type="text" value="{{item.quantity}}">
+            <a href="?product_id={{product.id}}&&quantity=+1">
+                <span class="inc qtybtn">+</span>
+            </a>
         </div>
     </td>
     <td class="total">${{item.subtotal|floatformat:"2"}}</td>
-    <td class="product-close">x</td>
+    <td class="product-close">
+        <a class="text-decoration-none text-dark" href="?product_id={{product.id}}&&quantity=-{{item.quantity}}">x</a>
+    </td>
 </tr>
 {% endwith %}
 {% endfor %}
@@ -70,7 +78,9 @@
                     </div>
                 </div>
                 <div class="col-lg-5 offset-lg-1 text-left text-lg-right">
-                    <div class="site-btn clear-btn">Clear Cart</div>
+                    <div class="site-btn clear-btn"><a class="text-decoration-none text-dark" href="?clear=true">
+                        Clear Cart
+                    </a></div>
                     <div class="site-btn update-btn">Update Cart</div>
                 </div>
             </div>
