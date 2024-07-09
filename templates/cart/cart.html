@@ -40,7 +40,7 @@
                         <th class="product-h">Product</th>
                         <th>Price</th>
                         <th class="quan">Quantity</th>
-                        <th>Total</th>
+                        <th>SubTotal</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -78,13 +78,22 @@
                     
                 </tbody>
             </table>
+            <hr>
+            <h4 class="text-center">
+<strong>Total =</strong> ${{cart.total}}
+            </h4>
         </div>
         <div class="cart-btn">
             <div class="row">
                 <div class="col-lg-6">
-                    <div class="coupon-input">
-                        <input type="text" placeholder="Enter cupone code">
-                    </div>
+                    <form action="{% url "add_coupon" %}" method="POST" class="col-lg-5">
+                       {% csrf_token %}
+                        <div class="coupon-input">
+                            <input name="coupon" type="text" placeholder="Enter cupone code">
+                        </div>
+                         {% comment %} <button type="submit" class="site-btn">apply</button> {% endcomment %}
+
+                    </form>
                 </div>
                 <div class="col-lg-5 offset-lg-1 text-left text-lg-right">
                     <div class="site-btn clear-btn"><a class="text-decoration-none text-dark" href="?clear=true">

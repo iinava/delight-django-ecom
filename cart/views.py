@@ -3,6 +3,9 @@ from .carts import Cart
 from django.views import generic
 from product.models import Product
 from django.contrib import messages
+from .models import Coupon
+from django.utils import timezone
+from datetime import datetime
 
 # Create your views here.
 class AddToCart(generic.View):
@@ -23,6 +26,7 @@ class  CartItems(generic.TemplateView):
         quantity = request.GET.get('quantity',None)
         clear=request.GET.get('clear',False)
         cart = Cart(request)
+        # print(cart.coupon)c
         if product_id and quantity:
             product = get_object_or_404(Product,id=product_id )
             if int(quantity) > 0:   
@@ -45,3 +49,34 @@ class  CartItems(generic.TemplateView):
             
             
         return super().get(request,*args, **kwargs)
+    
+    
+class Addcoupon(generic.View):
+    def post(self, *args, **kwargs):
+        code = self.request.POST.get('coupon')
+        coupon= Coupon.objects.filter(code=code)
+        cart = Cart(self.request)
+        
+        if coupon.exists():
+            coupon=coupon.first()
+            current_time= timezone.now().date()
+            active_date = coupon.active_date
+            expiry_date=coupon.expiry_date
+            
+            if current_time > expiry_date:
+                messages.warning(self.request, 'Coupon expired')
+                return redirect('cart_items')
+            
+            if current_time < active_date:
+                messages.warning(self.request, 'Coupon is yet to be available')
+                return redirect('cart_items')
+            if cart.total() < coupon.required_amount_touse_coupon:
+                messages.warning(self.request, f'You have to shop at least {coupon.required_amount_touse_coupon} to use this coupon')
+                return redirect('cart_items')
+            
+            cart.add_coupon(coupon.id)
+            messages.success(self.request, 'you coupon has been included')
+            return redirect('cart_items')
+        else:
+            messages.warning(self.request, 'Invalid coupon')
+            return redirect('cart_items')
