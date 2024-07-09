@@ -22,6 +22,9 @@ from .mixins import (
     LogoutRequiredMixin
 )
 
+from cart.carts import Cart
+import copy
+
 
 
 @method_decorator(never_cache, name='dispatch')
@@ -55,7 +58,12 @@ class Login(LogoutRequiredMixin, generic.View):
 
 class Logout(generic.View):
     def get(self, *args, **kwargs):
+        cart = Cart(self.request)
+        current_cart = copy.deepcopy(cart.cart)
+        coupon = copy.deepcopy(cart.coupon)
+        
         logout(self.request)
+        cart.restore_after_logout(current_cart,coupon)
         return redirect('login')
 
 
@@ -66,8 +74,15 @@ class Registration(LogoutRequiredMixin, generic.CreateView):
     success_url = reverse_lazy('login')
 
     def form_valid(self, form):
-        messages.success(self.request, "Registration Successfull !")
+        messages.success(self.request, "Registration Successful!")
         return super().form_valid(form)
+
+    def form_invalid(self, form):
+        messages.error(self.request, "There was an error with your registration. Please try again.")
+        for field, errors in form.errors.items():
+            for error in errors:
+                messages.error(self.request, f"{field}: {error}")
+        return super().form_invalid(form)
 
 
 @method_decorator(never_cache, name='dispatch')
