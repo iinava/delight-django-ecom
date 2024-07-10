@@ -1,0 +1,128 @@
+{% extends "../base.html" %}
+{% block title %}Checkout{% endblock title %}
+
+{% block content %}
+<div>Checkout</div>
+<!-- Page Add Section Begin -->
+<section class="page-add">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="page-breadcrumb">
+                    <h2>Checkout Product<span>.</span></h2>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <img src="img/add.jpg" alt="">
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Page Add Section End -->
+
+<!-- Contact Section Begin -->
+<div class="contact-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <form id="checkout_form" class="contact-form" novalidate method="POST">
+                    {% csrf_token %}
+                    <div class="row">
+                        {% if messages %}
+                        <div class="col-lg-12 py-2">
+                            {% include "../message.html" %}
+                        </div>
+                        {% endif %}
+                        <div class="col-lg-12 errorlist">
+                            <input name="first_name" type="text" placeholder="Enter first name">
+                            <small id="error_first_name" class="text-danger"></small>
+                        </div>
+                        <div class="col-lg-12 errorlist">
+                            <input name="last_name" type="text" placeholder="Enter last name">
+                            <small id="error_last_name" class="text-danger"></small>
+                        </div>
+                        <div class="col-lg-12 errorlist">
+                            <input name="email" type="text" placeholder="Enter email">
+                            <small id="error_email" class="text-danger"></small>
+                        </div>
+                        <div class="col-lg-12 errorlist">
+                            <input name="city" type="text" placeholder="Enter city">
+                            <small id="error_city" class="text-danger"></small>
+                        </div>
+                        <div class="col-lg-12 errorlist">
+                            <input name="zip_code" type="text" placeholder="Enter zip code">
+                            <small id="error_zip_code" class="text-danger"></small>
+                        </div>
+                        <div class="col-lg-12 errorlist">
+                            <input name="address" type="text" placeholder="Enter shipping address">
+                            <small id="error_address" class="text-danger"></small>
+                        </div>
+                        <br><br>
+                        <div class="col-lg-12 text-right">
+                            <button class="btn-block" type="submit">Pay now</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Contact Section End -->
+{% endblock content %}
+
+{% block extra_scripts %}
+<script>
+    const form = document.getElementById('checkout_form');
+    const csrfmiddlewaretoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    let formisValid = false;
+    
+    const validateFormAndCheckout = async () => {
+        const url = '/checkout/';
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': csrfmiddlewaretoken,
+                    'Accept': 'application/json'
+                },
+                body: new FormData(form)
+            });
+            const responseText = await response.text();
+            console.log('Raw response:', responseText); // Log the raw response
+            const data = JSON.parse(responseText);
+            if (data.success) {
+                formisValid = true;
+                new FormData(form).forEach((value,key)=>{
+                    if (key != 'csrfmiddlewaretoken'){
+
+                        document.getElementById(`error_${key}`).innerText = ""
+                    }
+                })
+            } else {
+                let errors = data.errors;
+                formisValid = false;
+                Object.keys(errors).forEach((key) => {
+                    console.log(key, "-", errors[key]);
+                    document.getElementById(`error_${key}`).innerText = errors[key].join(' ');
+                });
+            }
+            console.log(data);
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
+
+    form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        console.log('submit');
+        validateFormAndCheckout().then(() => {
+            if (formisValid) {
+                
+                console.log("valid");
+            } else {
+                console.log("invalid");
+            }
+        });
+    });
+</script>
+{% endblock extra_scripts %}
